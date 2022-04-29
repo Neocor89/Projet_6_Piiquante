@@ -6,17 +6,17 @@ const path = require('path'); // Donne accès au système de fichier
 const sauceRoutes = require('./routes/sauce'); // On importe la route dédiée aux sauces
 const userRoutes = require('./routes/user'); // On importe la route dédiée aux sauces
 
+
 // utilisation du module 'dotenv' qui permet de masquer les informations de connexion à la base de données à l'aide de variables d'environnement
 require('dotenv').config();
 
 // Connexion à la base de données MongoDB sécurisé avec le fichier .env pour cacher le mot de passe
-mongoose
-  .connect(process.env.SECRET_DB, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+//: Info de connection de "mangoDB"
+mongoose.connect('mongodb+srv://DB_Ben_Devweb:Dexterb89mongodb@cluster0.pyylw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+//: Vérifiication de la connection à "mangoDB"
+.then(() => console.log('Connexion à mongodb réussie !'))
+//: Vérifiication d'une erreur de connection à "mangoDB"
+.catch(() => console.log('Echec de la Connexion à mongodb !'));
 
 const app = express(); // Création d'une application express en utilisant le framework express
 
