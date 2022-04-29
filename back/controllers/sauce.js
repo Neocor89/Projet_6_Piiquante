@@ -44,7 +44,7 @@ exports.modifySauce = (req, res, next) => {
       }
       const sauceObject = req.file
         ? {
-            // On modifie les données et on ajoute la nouvelle image
+            // On modifie les données
             ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${
               req.file.filename
@@ -61,9 +61,9 @@ exports.modifySauce = (req, res, next) => {
     .catch((error) => res.status(400).json({ message: 'Souce non trouvée' }));
 };
 
-/*** PERMET LA SUPPRESSION DE "SAUCE" */
+//: Suppression de la sauce
 exports.deleteSauce = (req, res, next) => {
-  // Avant de supprimer l'objet, on va le chercher pour obtenir l'url de l'image et supprimer le fichier image de la base
+  //: Récupération puis suppression de l'objet dans la base de données
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       if (sauce.userId != req.userId) {
@@ -72,11 +72,11 @@ exports.deleteSauce = (req, res, next) => {
         });
         return;
       }
-      // Pour extraire ce fichier, on récupère l'url de la sauce, et on le split autour de la chaine de caractères, donc le nom du fichier
+      //: Extraction nom fichier via methode split
       const filename = sauce.imageUrl.split('/images/')[1];
-      // Avec ce nom de fichier, on appelle unlink pour suppr le fichier
+      //: Puis methode unlink (Node) pour suppression du fichier
       fs.unlink(`images/${filename}`, () => {
-        // On supprime le document correspondant dans la base de données
+        //: Puis suppression dans la base de données
         Sauce.deleteOne({ _id: req.params.id })
           .then(() => res.status(200).json({ message: 'Sauce supprimée !' }))
           .catch((error) => res.status(400).json({ error }));
@@ -85,15 +85,15 @@ exports.deleteSauce = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-// Récupération d'une sauce identifiée par son id depuis la base MongoDB
+//: Récupération d'une sauce en particulier via son id depuis la DB de MongoDB
 exports.getOneSauce = (req, res, next) => {
-  // On utilise la méthode findOne et on lui passe l'objet de comparaison, on veut que l'id de la sauce soit le même que le paramètre de requête
+  //: Utilisation methode findOne avec objet de comparaison en paramètre (id:sauce = paramètre de requête)
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => res.status(200).json(sauce))
     .catch((error) => res.status(404).json({ error }));
 };
 
-// Récupération de toutes les sauces dans la base MongoDB
+//: Récupération de toutes les sauces dans la DB de MongoDB
 exports.getAllSauces = (req, res, next) => {
   // On utilise la méthode find pour obtenir la liste complète des sauces trouvées dans la base données
   Sauce.find()
@@ -101,20 +101,23 @@ exports.getAllSauces = (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-// Mise en place des Like et Dislike des sauces
+//: Like et Dislike des sauces
 exports.likeDislikeSauce = (req, res, next) => {
-  let like = req.body.like; // Like présent dans le body
-  let userId = req.body.userId; // On récupère le userID
-  let sauceId = req.params.id; // On récupère l'id de la sauce
+  let like = req.body.like;
+  //: Récupération du Like dans le body
+  let userId = req.body.userId;
+  //: Récupération du userID
+  let sauceId = req.params.id;
+  //: Récupération de l'id de la sauce
   Sauce.findOne({ _id: sauceId }).then((sauce) => {
-    //: Utilisation de switch pour les differents cas de figure 
+    //: Utilisation switch pour les differents cas de figure entre like et dislike
     switch (like) {
       case 1:
         if (sauce.usersLiked.includes(req.userId)) {
           res.status(400).json({ message: 'Impossible de faire cette action' });
           return;
         }
-        // En cas de Like on push l'utilisateur et on incrémente le compteur de 1
+        //: SI le user like on push l'utilisateur et on incrémente de 1
         Sauce.updateOne(
           { _id: sauceId },
           { $push: { usersLiked: userId }, $inc: { likes: +1 } }
@@ -124,7 +127,6 @@ exports.likeDislikeSauce = (req, res, next) => {
         break;
 
       case 0:
-        // Dislike
         if (sauce.usersLiked.includes(req.userId)) {
           Sauce.updateOne(
             { _id: sauceId },
@@ -133,7 +135,6 @@ exports.likeDislikeSauce = (req, res, next) => {
             .then(() => res.status(200).json({ message: `Neutre` }))
             .catch((error) => res.status(400).json({ error }));
         }
-        // On annule un Dislike, on incrémente de -1
         if (sauce.usersDisliked.includes(req.userId)) {
           Sauce.updateOne(
             { _id: sauceId },
