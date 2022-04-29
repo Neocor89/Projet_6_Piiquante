@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+//: Inportation de mongoose
 
-// Création d'un schema mangoose pour que les données de la base MongoDB ne puissent pas différer de
-// celui précisé dans le schema Model des sauces. L'id est généré automatiquement par MongoDB
+//: Schema mangoose base de données MongoDB schema Model des sauces. 
+//: Gestion de :id par MongoDB
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true }, // UserId du createur
   name: { type: String, required: true }, // Nom de la sauce
@@ -16,5 +17,5 @@ const sauceSchema = mongoose.Schema({
   usersDisliked: { type: [String], required: true }, // l'utilisateur qui Dislike la sauce
 });
 
-// On exporte ce schéma de données
+//: Exportation du schéma de données
 module.exports = mongoose.model('Sauce', sauceSchema);

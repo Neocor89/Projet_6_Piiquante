@@ -1,9 +1,11 @@
-const http = require('http'); // Importation du package http
-const app = require('./app'); // On importe app pour utilisation de l'application sur le serveur
+const http = require('http');
+//: Importation du package HTTP
+const app = require('./app');
+//: Utilisation application sur le serveur
 
 // Configuration du port de connexion
 const normalizePort = (val) => {
-  // Renvoie un port valide avec la fonction normalizePort
+  //: Fonction normalizePort renvoie port valide
   const port = parseInt(val, 10);
 
   if (isNaN(port)) {
@@ -14,11 +16,11 @@ const normalizePort = (val) => {
   }
   return false;
 };
-// Si aucun port n'est fourni on écoutera sur le port 3000
+//: Si aucun renvoie de PORT écoute du port 3000
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-// la fonction errorHandler capte les différentes erreurs et l' enregistre dans le serveur
+
 const errorHandler = (error) => {
   if (error.syscall !== 'listen') {
     throw error;
