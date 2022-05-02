@@ -9,9 +9,9 @@ exports.createSauce = (req, res, next) => {
   //: Stockage des données pour le front-end via form-data et transformation en objet js
   const sauceObject = JSON.parse(req.body.sauce);
 
-  // Suppression de l'id généré par le front-end.
+  //: Suppression de l'id généré par le front-end.
   delete sauceObject._id;
-  //: Création automatiquement par la base MongoDB 
+  //: Création automatiquement par la BDD MongoDB 
 
   const sauce = new Sauce({
     ...sauceObject,
@@ -26,7 +26,7 @@ exports.createSauce = (req, res, next) => {
     }`,
   });
 
-  //: Methode save pour Sauvegarde la sauce dans la base de données
+  //: Methode save pour Sauvegarde la sauce dans la BDD
   sauce.save()
     .then(() => res.status(201).json({ message: 'Sauce enregistrée !' }))
     .catch((error) => res.status(400).json({ error }));
@@ -44,7 +44,7 @@ exports.modifySauce = (req, res, next) => {
       }
       const sauceObject = req.file
         ? {
-            // On modifie les données
+            //: On modifie les données
             ...JSON.parse(req.body.sauce),
             imageUrl: `${req.protocol}://${req.get('host')}/images/${
               req.file.filename
@@ -58,7 +58,7 @@ exports.modifySauce = (req, res, next) => {
         .then(() => res.status(200).json({ message: 'Sauce modifiée !' }))
         .catch((error) => res.status(400).json({ error }));
     })
-    .catch((error) => res.status(400).json({ message: 'Souce non trouvée' }));
+    .catch((error) => res.status(400).json({ message: 'Sauce Introuvable' }));
 };
 
 //: Suppression de la sauce
@@ -85,17 +85,17 @@ exports.deleteSauce = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-//: Récupération d'une sauce en particulier via son id depuis la DB de MongoDB
+//: Récupération d'une sauce en particulier via son id depuis la BDD de MongoDB
 exports.getOneSauce = (req, res, next) => {
-  //: Utilisation methode findOne avec objet de comparaison en paramètre (id:sauce = paramètre de requête)
+  //: Methode findOne avec objet de comparaison en paramètre (id:sauce = paramètre de requête)
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => res.status(200).json(sauce))
     .catch((error) => res.status(404).json({ error }));
 };
 
-//: Récupération de toutes les sauces dans la DB de MongoDB
+//: Récupération de toutes les sauces dans la BDD de MongoDB
 exports.getAllSauces = (req, res, next) => {
-  // On utilise la méthode find pour obtenir la liste complète des sauces trouvées dans la base données
+  //: Méthode find pour récupérer la liste complète des sauces trouvées dans la BDD
   Sauce.find()
     .then((sauces) => res.status(200).json(sauces))
     .catch((error) => res.status(400).json({ error }));
@@ -114,12 +114,13 @@ exports.likeDislikeSauce = (req, res, next) => {
     switch (like) {
       case 1:
         if (sauce.usersLiked.includes(req.userId)) {
-          res.status(400).json({ message: 'Impossible de faire cette action' });
+          res.status(400).json({ message: 'Action non autorisée' });
           return;
         }
         //: SI le user like on push l'utilisateur et on incrémente de 1
         Sauce.updateOne(
           { _id: sauceId },
+          //: Operateur qui renvoie un tableau de toutes les valeurs
           { $push: { usersLiked: userId }, $inc: { likes: +1 } }
         )
           .then(() => res.status(200).json({ message: `J'aime` }))
@@ -130,6 +131,7 @@ exports.likeDislikeSauce = (req, res, next) => {
         if (sauce.usersLiked.includes(req.userId)) {
           Sauce.updateOne(
             { _id: sauceId },
+            //: Opérateur qui supprime de toutes les valeurs d'un tableau
             { $pull: { usersLiked: userId }, $inc: { likes: -1 } } // On incrémente de -1
           )
             .then(() => res.status(200).json({ message: `Neutre` }))
@@ -138,6 +140,7 @@ exports.likeDislikeSauce = (req, res, next) => {
         if (sauce.usersDisliked.includes(req.userId)) {
           Sauce.updateOne(
             { _id: sauceId },
+            //: Opérateur qui supprime de toutes les valeurs d'un tableau
             { $pull: { usersDisliked: userId }, $inc: { dislikes: -1 } }
           )
             .then(() => res.status(200).json({ message: `Neutre` }))
@@ -152,6 +155,7 @@ exports.likeDislikeSauce = (req, res, next) => {
         }
         Sauce.updateOne(
           { _id: sauceId },
+          //: Operateur qui renvoie un tableau de toutes les valeurs
           { $push: { usersDisliked: userId }, $inc: { dislikes: +1 } }
         )
           .then(() => {
