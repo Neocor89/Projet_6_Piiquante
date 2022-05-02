@@ -16,12 +16,12 @@ exports.signup = (req, res, next) => {
   bcrypt.hash(req.body.password, 10)
     .then((hash) => {
       const user = new User({
-        // On passe l'email qu'on trouve dans le corps de la requête
+        //: email trouvé passé dans le corps de la requête
         email: req.body.email,
         password: hash 
       });
 
-      //: Enregistrement dans la base de données du nouvel utilisateur
+      //: Enregistrement dans la BDD du nouvel utilisateur
       user.save()
         .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
         .catch((error) => res.status(400).json({ error }));
@@ -47,9 +47,10 @@ exports.login = (req, res, next) => {
           //: Si requête authentifiée renvoi d'un statut 200 format JSON
           res.status(200).json({
             userId: user._id,
-            //: Token temporaire expiration au bout de 24h 
+        
             token: jwt.sign({ userId: user._id }, process.env.SECRET_TOKEN, {
               expiresIn: '24h',
+              //: Token temporaire avec une durée d'expiration de 24h 
             }),
           });
         })

@@ -10,8 +10,10 @@ const userCtrl = require('../controllers/user');
 const checkEmail = require('../middleware/check-email');
 //: Différentes routes liée aux mail
 
-// const checkPassword = require('../middleware/check-password');
+
+const checkPassword = require('../middleware/check-password');
 //: Différentes routes liée aux password
+
 
 router.post('/signup', checkEmail, userCtrl.signup);
 router.post('/login', userCtrl.login);

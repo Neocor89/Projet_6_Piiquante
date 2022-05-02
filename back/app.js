@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 //: Importation mongoose (Utilisation de la base de données)
 
-//? const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 const path = require('path');
 //: Accès au système de fichier
@@ -19,7 +19,7 @@ require('dotenv').config();
 
 // TODO Se connecter à la base de données MongoDB de manière sécurisée avec le fichier .env pour cacher le mot de passe
 //: Info de connection de "mangoDB"
-mongoose.connect("mongodb+srv://Ben_DevWeb:Dexterb89_P6@cluster0.dhmxq.mongodb.net/Projet_6_Piiquante?retryWrites=true&w=majority", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://'+ process.env.DB_USER +':'+ process.env.DB_PASSWORD +'@cluster0.dhmxq.mongodb.net/'+ process.env.DB_NAME +'?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
 //: Vérifiication de la connection à "mangoDB"
 .then(() => console.log('Connexion à mongodb réussie !'))
 //: Vérifiication d'une erreur de connection à "mangoDB"
