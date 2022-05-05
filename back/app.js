@@ -14,10 +14,10 @@ const userRoutes = require('./routes/user');
 //: On importe la route dédiée aux sauces
 
 
-// TODO utilisation du module 'dotenv' qui permet de masquer les informations de connexion à la base de données à l'aide de variables d'environnement
+
 require('dotenv').config();
 
-// TODO Se connecter à la base de données MongoDB de manière sécurisée avec le fichier .env pour cacher le mot de passe
+
 //: Info de connection de "mangoDB"
 mongoose.connect('mongodb+srv://'+ process.env.DB_USER +':'+ process.env.DB_PASSWORD +'@cluster0.dhmxq.mongodb.net/'+ process.env.DB_NAME +'?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
 //: Vérifiication de la connection à "mangoDB"
