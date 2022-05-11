@@ -3,7 +3,7 @@ const http = require("http");
 const app = require("./app");
 //: Utilisation application sur le serveur
 
-// Configuration du port de connexion
+//: Configuration du port de connexion
 const normalizePort = (val) => {
   //: Fonction normalizePort renvoie port valide
   const port = parseInt(val, 10);
@@ -16,6 +16,7 @@ const normalizePort = (val) => {
   }
   return false;
 };
+
 //: Si aucun renvoie de PORT écoute du port 3000
 const port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
@@ -25,8 +26,7 @@ const errorHandler = (error) => {
     throw error;
   }
   const address = server.address();
-  const bind =
-    typeof address === "string" ? "pipe " + address : "port: " + port;
+  const bind = typeof address === "string" ? "pipe " + address : "port: " + port;
   switch (error.code) {
     case "EACCES":
       console.error(bind + " requires elevated privileges.");
@@ -39,8 +39,10 @@ const errorHandler = (error) => {
     default:
       throw error;
   }
+
 };
-//: localhost:4200 connexion acceil P6
+
+
 const server = http.createServer(app);
 
 server.listen(process.env.PORT || 3000);

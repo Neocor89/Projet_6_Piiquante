@@ -1,5 +1,5 @@
 module.exports = (req, res, next) => {
-  //: Pour route POST
+  //: Pour route POST AJOUT
   if (JSON.parse(req.body.sauce !== undefined)) {
     const sauce = JSON.parse(req.body.sauce);
     let { name, manufacturer, description, mainPepper } = sauce;
@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
       throw new Error('Tous les champs doivent faire au moins 3 caractères');
     } //: Utilisation de (new Error)
   } else {
-    //: Pour route PUT
+    //: Pour route PUT MODIFICATION
     const sauce = req.body;
     let { name, manufacturer, description, mainPepper } = sauce;
     let trimArray = [];

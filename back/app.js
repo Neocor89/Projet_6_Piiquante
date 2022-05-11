@@ -1,5 +1,6 @@
 const express = require('express');
 //: Importation d'express
+
 const mongoose = require('mongoose');
 //: Importation mongoose (Utilisation de la base de données)
 
@@ -10,13 +11,12 @@ const path = require('path');
 
 const sauceRoutes = require('./routes/sauce');
 //: On importe la route dédiée aux sauces
+
 const userRoutes = require('./routes/user');
-//: On importe la route dédiée aux sauces
-
-
+//: On importe la route dédiée aux User
 
 require('dotenv').config();
-
+//: Importation de .env Sécurisation des données
 
 //: Info de connection de "mangoDB"
 mongoose.connect('mongodb+srv://'+ process.env.DB_USER +':'+ process.env.DB_PASSWORD +'@cluster0.dhmxq.mongodb.net/'+ process.env.DB_NAME +'?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
   next();
 });
 
-//: Transformation des data de des requêtes en objet JSON
+//: Analyse et transformation des datas des requêtes en objet JSON
 app.use(express.json());
 
 //: Midleware de prise en charge des fichiers dans dossier images de façon statique
