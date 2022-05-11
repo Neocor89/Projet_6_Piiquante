@@ -22,17 +22,6 @@ const storage = multer.diskStorage({
   },
 });
 
-//! Ajout CODE TEST récupération + affichage des images de sauces importées manquantes
-const upload = multer({ storage: storage });
-app.post("/blogs/upload", upload.single("photo"), (req, res) =>
-  res.json({
-    success: true,
-    blog: {
-      photo: "/uploads/" + req.file.filename,
-    },
-  })
-);
-//! Ajout CODE TEST récupération + affichage des images de sauces importées manquantes
 
 module.exports = multer({ storage: storage }).single('image');
 //: Exportation du module créé, avec l'objet storage, avec méthode single pour préciser un fichier unique et de type image
