@@ -10,4 +10,4 @@ const userSchema = mongoose.Schema({
 userSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('User', userSchema);
-//: Exportation du schéma du schéma de données
+//: Exportation du schéma du schéma de données 050C04 108E82 EDE661

@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+//: Importation package bcrypt pour utilisateur
 
 //: Importation jsonwebtoken package token pour utilisateur
 const jwt = require('jsonwebtoken');

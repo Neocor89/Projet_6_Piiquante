@@ -20,6 +20,7 @@ module.exports = (req, res, next) => {
   } else {
     //: Pour route PUT MODIFICATION
     const sauce = req.body;
+    //: Sauce existante
     let { name, manufacturer, description, mainPepper } = sauce;
     let trimArray = [];
 
@@ -37,3 +38,4 @@ module.exports = (req, res, next) => {
     //: Vérification du nombre de caractères
   }
 };
+
