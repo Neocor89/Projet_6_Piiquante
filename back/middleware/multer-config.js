@@ -22,6 +22,5 @@ const storage = multer.diskStorage({
   },
 });
 
-
 module.exports = multer({ storage: storage }).single('image');
 //: Exportation du module créé, avec l'objet storage, avec méthode single pour préciser un fichier unique et de type image

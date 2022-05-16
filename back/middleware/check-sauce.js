@@ -38,4 +38,3 @@ module.exports = (req, res, next) => {
     //: Vérification du nombre de caractères
   }
 };
-
